@@ -1,0 +1,34 @@
+name: Deploy UiPath to Orchestrator
+
+on:
+  push:
+    branches:
+      - main  # Hangi branch'e push edildiğinde tetiklenecek
+
+jobs:
+  deploy:
+    runs-on: windows-latest  # UiPath CLI Windows ortamında çalışır
+
+    steps:
+    # Repository'yi klonla
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # UiPath CLI'yi kur
+    - name: Setup UiPath CLI
+      uses: Mikael-RnD/setup-uipath@v1
+      with:
+        uipath-cli-version: 'latest'
+
+    # UiPath projesini paketleme ve Orchestrator'a dağıtım
+    - name: Deploy to Orchestrator
+      uses: Mikael-RnD/UiPath-Deploy@v1
+      with:
+        packagesPath: 'C:\Users\Pc\Documents\UiPath\Veri Kalitesi Demo  # Proje dosyalarının bulunduğu dizin'
+        orchestratorUrl: 'https://cloud.uipath.com/hasanen/DefaultTenant/orchestrator_/?tid=1570228&fid=4896473'
+        orchestratorTenant: 'DefaultTenant'
+        orchestratorFolder: 'My Workspace'
+        orchestratorApplicationId: '35eb0482-a792-47ac-b15f-29a36f8ede36'
+        orchestratorApplicationSecret: 'jge2^o^cw9h%I2H#'
+        orchestratorLogicalName: 'hasanen'
+        orchestratorApplicationScope: 'OR.Assets OR.BackgroundTasks OR.Execution OR.Folders OR.Jobs OR.Machines.Read OR.Monitoring OR.Robots.Read OR.Settings.Read OR.TestSets OR.TestSetExecutions OR.TestSetSchedules OR.Users.Read'
